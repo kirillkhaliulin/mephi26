@@ -1,42 +1,83 @@
 <?php
-session_start();
-
-if(!isset($_SESSION['login'])){
-    echo("Вы не вошли в аккаунт! Через 3 секунды вы будете перенаправлены на страницу логина ");
+  session_start();
+  // echo $_SESSION['name'];
+  if(!isset($_SESSION['name'])) {
+    echo("<h2>Вы не вошли в аккаунт! <br /> Через 3 секунды вы будете перенаправлены на страницу логина</h2> <br />");
     echo("<a href='login.html'>Войти в аккаунт</a>");
-    echo("<meta http-equiv='refresh' content='3; url=login.html'>");
+    // Правильный вариант
+    // header('Location: login.html');
+    // Ещё одинн способ
+    echo("<meta http-equiv='refresh' content='3; url=login.html'></meta>");
     die();
-}
+  }
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Калькулятор</title>
-</head>
-<body>
-    <input type="number" id="x" placeholder="x">
-    <input type="number" id="y" placeholder="y">
-
-    <button onclick="operation('plus')">Сложить</button>
-    <button onclick="operation('minus')">Вычесть</button>
-    <button onclick="operation('multiply')">Умножить</button>
-
-    <p>Результат: <span id="result"></span></p>
-
+    <style>
+      label {
+        font-size: 18px;
+        text-align: right;
+        width: 90%;
+      }
+      input {
+        width: 90%;
+        margin-bottom: 10px;
+        background-color: #ffffff;
+        border: 1px black solid;
+        padding-block: 5px;
+      }
+      .number {
+      }
+      #z {
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+      }
+      button {
+        width: 180px;
+        padding: 5px;
+        background-color: #52ccff;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
     <script>
-        function operation(operation) {
-            let x = document.getElementById('x').value;
-            let y = document.getElementById('y').value;
-
-            let request = new XMLHttpRequest();
-            request.open('GET', 'operations_service.php?operation=' + operation + '&x=' + x + '&y=' + y, true);
-            request.onload = function() {
-                document.getElementById('result').innerHTML = request.responseText;
-            };
-            request.send();
-        }
+      function calculateSum() {
+        let x = parseFloat(document.getElementById("x").value);
+        let y = parseFloat(document.getElementById("y").value);
+        let z = x + y;
+        document.getElementById("z").value = z;
+      }
+      function calculateMultiply() {
+        let x = parseFloat(document.getElementById("x").value);
+        let y = parseFloat(document.getElementById("y").value);
+        let z = x * y;
+        document.getElementById("z").value = z;
+      }
     </script>
-</body>
+  </head>
+  <body>
+    <a href='logout.php'>Выйти из системы</a>
+    <h1>Калькулятор</h1>
+    <div class="field">
+      <label for="x">X</label>
+      <input class="number" id="x" />
+    </div>
+    <div class="field">
+      <label for="y">Y</label>
+      <input class="number" id="y" />
+    </div>
+    <button onclick="calculateSum()">+</button>
+    <button onclick="calculateMultiply()">Умножить</button>
+    <div class="field">
+      <label for="z">Z</label>
+      <input id="z" />
+    </div>
+  </body>
 </html>
